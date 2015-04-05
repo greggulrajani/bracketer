@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+<style>
+ div {
+  border: solid 1px;
+  width: 110px;
+  border-left: 0px;
+  position: relative;
+}
+
+.player2_label {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.level {
+  position: absolute;
+  top: 0px;
+}
+
+#l1 div {
+  height: 40px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left:9px;
+}
+
+#l1 {
+  left: 0px;
+}
+
+#l2 div {
+	  height: 80px;
+  margin-top: 60px;
+  margin-bottom: 80px;
+}
+#l2 {
+  left: 120px;
+}
+
+#l3 div {
+	  height: 160px;
+  margin-top: 90px;
+  margin-bottom: 160px;
+
+}
+
+#l3 {
+  left: 230px;
+}
+
+#l4 div {
+	  height: 320px;
+  margin-top: 130px;
+  margin-bottom: 320px;
+}
+#l4 {
+  left: 340px;
+}
+
+
+#l5 div {
+	  height: 0px;
+  margin-bottom: 0px;
+  margin-top: 136px;
+}
+#l5 {
+  position: fixed;
+  top: 0px;
+  left: 250px;
+}
+
+
+</style>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body id='body'>
+
+<script>
+/* var json = '[{"userId1":{"id":1,"name":"greg","email":null},"userid2":{"id":2,"name":"bob","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":2,"name":"bob","email":null},"userid2":{"id":3,"name":"xander","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":4,"name":"annabel","email":null},"userid2":{"id":5,"name":"elijha","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":6,"name":"gregor","email":null},"userid2":{"id":7,"name":"sasha","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":8,"name":"betty","email":null},"userid2":{"id":9,"name":"fred","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":10,"name":"barney","email":null},"userid2":{"id":11,"name":"dino","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":12,"name":"wilmha","email":null},"userid2":{"id":13,"name":"george","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}},{"userId1":{"id":14,"name":"elrow","email":null},"userid2":{"id":15,"name":"nathan","email":null},"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":{"userId1":null,"userid2":null,"match":null}}}}}]'
+var	brackets = JSON.parse(json);
+var nextlevel = []; */
+
+var	brackets = [];
+var nextlevel = [];
+var anchor;
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+	  readBrackets();
+});
+	
+
+function readBrackets() {
+	var xmlhttp = new XMLHttpRequest();
+	var url = "../brackets";
+
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	        var brackets = JSON.parse(xmlhttp.responseText);
+	        var nextlevel = [];
+	        anchor = document.createElement('div');
+	        anchor.setAttribute('id','anchor');
+	        document.getElementById("body").appendChild(anchor);
+	        emit(brackets,1);	
+
+	    }
+	}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+
+function advance(winner, loser) {
+	var xmlhttp = new XMLHttpRequest();
+	var url = "../brackets/"+winner+"/"+loser;
+	console.debug(url);
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	        var brackets = JSON.parse(xmlhttp.responseText);
+	        var nextlevel = [];
+	        
+	        document.getElementById("body").removeChild(anchor);
+	        anchor = document.createElement('div');
+	        anchor.setAttribute('id','anchor');
+	        document.getElementById("body").appendChild(anchor);
+ 	        emit(brackets,1);	
+	    }
+	}
+	xmlhttp.open("PUT", url, true);
+	xmlhttp.send();	
+}
+
+
+function pad(size) {
+	var ret = '';
+    for (var i = 0 ; i < size;i++) {
+      ret = ret + '  ';	
+    }	
+    return ret;
+}
+
+function hover(obj) {
+	console.debug(obj);
+	
+}
+
+function emit(level, round) {
+	var lastMatch;
+	var nextLevel = [];
+	 var span = document.createElement("span");
+     span.setAttribute('id','l'+round);
+     span.setAttribute('class','level');
+	for (var i = 0; i < level.length; i++) {
+     
+      var div = document.createElement('div');
+      document.getElementById("anchor").appendChild(span);
+      span.appendChild(div);
+      var spanp1 = document.createElement("a");
+      var spanp2 = document.createElement("a");
+ 
+      spanp1.appendChild(document.createTextNode(safeGet(level[i]).userId1.name));  //#= spanp1.innerHTML + safeGet(level[i]).userId1.name;
+      spanp2.appendChild(document.createTextNode(safeGet(level[i]).userid2.name));
+      
+      //spanp2.innerHTML =  spanp2.innerHTML  + safeGet(level[i]).userid2.name;
+      
+      spanp2.setAttribute('class','player2_label');
+      spanp1.setAttribute('id','player_label');
+      spanp2.setAttribute('id','player_label');
+      spanp1.setAttribute('onclick','advance('+safeGet(level[i]).userId1.id+','+safeGet(level[i]).userid2.id+')');
+      spanp2.setAttribute('onclick','advance('+safeGet(level[i]).userid2.id+','+safeGet(level[i]).userId1.id+')');
+   //   spanp1.setAttribute('href','#');
+   //   spanp2.setAttribute('href','#');
+
+
+      div.appendChild(spanp1);
+      div.appendChild(spanp2);  
+      
+	  console.debug(round+"<>"+pad(level.length) +i+' '+ level.length + level[i].match);
+	  if (level[i].match != null) {
+		  if (JSON.stringify(level[i].match) ===  JSON.stringify(lastMatch)) {
+			nextLevel.push(lastMatch);
+			lastMatch = null;
+		  } else {
+		    lastMatch = level[i].match;  
+		  }
+	  }
+	}
+	if(nextLevel.length > 0) {
+	  emit(nextLevel,++round);	
+	}
+}
+
+
+function safeGet(object) {
+	if (object.userId1 === null || object.userid2 === null) {
+		return new function() {
+			this.userId1 =  new function() {
+				this.name = "";
+				this.id = 0;
+				
+			}
+			
+			this.userid2 =  new function() {
+				this.name = "";
+				this.id = 0;
+
+			}
+		}
+     }
+	
+	return object;
+}
+ 
+
+
+
+</script>
+</body>
+</	>

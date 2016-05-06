@@ -2,6 +2,17 @@
 
 # Mobile options
 
+
+
+| Approach      | Push notifications           | Access to sensors  | Higcharts support | Agile deployment | Native L&F | Code reuse | More auth options | Central user mgmt | Launch icon support |
+| ------------- |:-------------:| :-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| Responsive website only / bootstrap     |||X|X||X||X|X|
+|  Web launcher / bootstrap               |||X|X||X||X|X|
+| App - web only / bootstrap              |X|X|X|X||X|X|X|X|
+|  App - React       |X|X|||X|X|X||X|
+|  App - Full app|X|X|||X||X||X|
+
+
 ## Responsive website only / bootstrap
 - no notifications
 - highchart support
@@ -53,12 +64,3 @@
 - no compelling off-line feature requirements
 - requires full responsive site as well
 - difficult to push out critical bug fixes
-
-
-| Approach      | Push notifications           | Access to sensors  | Higcharts support | Agile deployment | Native L&F | Code reuse | More auth options | Central user mgmt | Launch icon support |
-| ------------- |:-------------:| :-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| Responsive website only / bootstrap     |||X|X||X||X|X|
-|  Web launcher / bootstrap               |||X|X||X||X|X|
-| App - web only / bootstrap              |X|X|X|X||X|X|X|X|
-|  App - React       |X|X|||X|X|X||X|
-|  App - Full app|X|X|||X||X||X|

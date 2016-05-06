@@ -54,7 +54,6 @@
 - no compelling off-line feature requirements
 - requires full responsive site as well
 - difficult to push out critical bug fixes
-- 
 
 | Approach      | Push notifications           | Access to sensors  | Higcharts support | Agile deployment | Native L&F | Code reuse | More auth options | Central user mgmt | Launch icon support |
 | ------------- |:-------------:| :-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
